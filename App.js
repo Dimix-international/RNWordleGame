@@ -20,12 +20,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.black,
     alignItems: 'center',
+    paddingTop: 30,
   },
   title: {
     color:colors.lightgrey,
     fontSize: 32,
     fontWeight: '700',
     letterSpacing: 7,
-    marginTop: 20,
   },
 });
