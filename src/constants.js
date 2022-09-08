@@ -22,4 +22,4 @@ export const keys = [
   [ENTER, "z", "x", "c", "v", "b", "n", "m", CLEAR],
 ];
 
-export const NUMBER_OF_TRIES = 5;
+export const MAX_NUMBER_OF_TRIES = 8;

@@ -1,5 +1,5 @@
 import {Text, View, StyleSheet, Pressable, Alert, ScrollView} from "react-native";
-import {colors, colorsToEmoji, NUMBER_OF_TRIES} from "../../constants";
+import {colors, colorsToEmoji, MAX_NUMBER_OF_TRIES } from "../../constants";
 import {useEffect, useState} from "react";
 import * as Clipboard from "expo-clipboard";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -66,7 +66,7 @@ const EndScreen = ({rows, getCellBGColor, won = false}) => {
 
         //guess distribution
 
-        const dist = new Array(NUMBER_OF_TRIES).fill(0);
+        const dist = new Array(MAX_NUMBER_OF_TRIES).fill(0);
         values.map((game) => {
             console.log('game', game);
             const {gameState, rows} = game;

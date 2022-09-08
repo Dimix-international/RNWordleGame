@@ -11,5 +11,7 @@ export const getDayOfTheYear = () => {
     return Math.floor(diff / oneDay);
 };
 
+export const getNumberOfTries = (word) => word.length < 5 ? 8 : 6;
+
 
 export const getDayKey = () => `day-${getDayOfTheYear()}-${new Date().getFullYear()}`;

@@ -4,7 +4,7 @@ import {CLEAR, colors, ENTER, NUMBER_OF_TRIES} from "../../constants";
 import {KeyboardComponent} from "../Keyboard/Keyboard";
 import {words} from "../../words";
 import styles from './Game.styles';
-import {copyArray, getDayKey, getDayOfTheYear} from "../../utlis";
+import {copyArray, getDayKey, getDayOfTheYear, getNumberOfTries} from "../../utlis";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import EndScreen from "../EndScreen";
 import Animated, {FlipInEasyX, SlideInLeft, ZoomIn} from 'react-native-reanimated';
@@ -16,12 +16,12 @@ const dayKey = getDayKey();
 
 const Game = () => {
 //AsyncStorage.removeItem('@game');
-    const word = words[0];
+    const word = words[dayOfTheYear];
     const letters = word.split(""); // ['h', 'e', 'l', 'l', 'o']
     const [isFinishGame, setIsFinishGame] = useState(false);
 
     const [rows, setRows] = useState(
-        new Array(NUMBER_OF_TRIES).fill(new Array(letters.length).fill(''))
+        new Array(getNumberOfTries(word)).fill(new Array(letters.length).fill(''))
     );
 
     const [curRow, setCurRow] = useState(0);
@@ -145,12 +145,15 @@ const Game = () => {
         const dataString = await AsyncStorage.getItem('@game');
         try {
             const data = JSON.parse(dataString);
-            const day = data[dayKey];
-            const {rows, curRow, curCol, gameState} = day || {};
-            setRows(() => rows);
-            setCurCol(() => curCol);
-            setCurRow(() => curRow);
-            setGameState(() => gameState);
+            const day = data[dayKey] || {};
+
+            if (day) {
+                const {rows, curRow, curCol, gameState} = day;
+                setRows(() => rows);
+                setCurCol(() => curCol);
+                setCurRow(() => curRow);
+                setGameState(() => gameState);
+            }
         } catch (e) {
             console.error(e.message);
         }
