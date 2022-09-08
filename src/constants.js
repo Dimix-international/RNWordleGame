@@ -21,3 +21,5 @@ export const keys = [
   ["a", "s", "d", "f", "g", "h", "j", "k", "l"],
   [ENTER, "z", "x", "c", "v", "b", "n", "m", CLEAR],
 ];
+
+export const NUMBER_OF_TRIES = 5;

@@ -1,8 +1,9 @@
 import { View, Text, Pressable } from "react-native";
 import { keys, ENTER, CLEAR, colors } from "../../constants";
 import styles, { keyWidth } from "./Keyboard.styles";
+import Animated, { SlideInDown } from 'react-native-reanimated';
 
-const Keyboard = ({
+export const KeyboardComponent = ({
   onKeyPressed = () => {},
   greenCaps = [],
   yellowCaps = [],
@@ -26,7 +27,10 @@ const Keyboard = ({
   };
 
   return (
-    <View style={styles.keyboard}>
+    <Animated.View
+        style={styles.keyboard}
+        entering={SlideInDown.springify().mass(0.5)}
+    >
       {keys.map((keyRow, i) => (
         <View style={styles.row} key={`row-${i}`}>
           {keyRow.map((key) => (
@@ -45,8 +49,6 @@ const Keyboard = ({
           ))}
         </View>
       ))}
-    </View>
+    </Animated.View>
   );
 };
-
-export default Keyboard;
