@@ -87,8 +87,10 @@ const Game = () => {
     }
 
     const getAllLettersWithColor = (color) => {
-        return rows.flatMap((row, i) =>
-            row.filter((cell, j) => getCellBGColor(i, j) === color));
+        if (rows) {
+            return rows.flatMap((row, i) =>
+                row.filter((cell, j) => getCellBGColor(i, j) === color));
+        }
     }
 
     const greensCaps = getAllLettersWithColor(colors.primary);
@@ -145,9 +147,8 @@ const Game = () => {
         const dataString = await AsyncStorage.getItem('@game');
         try {
             const data = JSON.parse(dataString);
-            const day = data[dayKey] || {};
-
-            if (day) {
+            if (data) {
+                const day = data[dayKey];
                 const {rows, curRow, curCol, gameState} = day;
                 setRows(() => rows);
                 setCurCol(() => curCol);
@@ -156,10 +157,9 @@ const Game = () => {
             }
         } catch (e) {
             console.error(e.message);
+        } finally {
+            setLoaded(true);
         }
-
-        setLoaded(true);
-
     }
 
     useEffect(() => {
@@ -208,38 +208,35 @@ const Game = () => {
                             style={styles.row}>
                             {
                                 row.map((letter, j) => {
-                                    return (
-                                    <>
-                                        {
-                                            i < curRow && (
+
+                                    if(i < curRow) {
+                                        return (
                                             <Animated.View
                                                 entering={FlipInEasyX.delay(j * 50)}
                                                 key={`cell-color-${i}-${j}`}
                                                 style={getCellStyle(i, j)}>
                                                 <Text style={styles.cellText}>{letter?.toUpperCase()}</Text>
                                             </Animated.View>
-                                            )
-                                        }
-                                        {
-                                            i === curRow && !!letter && (
-                                                <Animated.View
-                                                    entering={ZoomIn}
-                                                    key={`cell-active-${i}-${j}`}
-                                                    style={getCellStyle(i, j)}>
-                                                    <Text style={styles.cellText}>{letter?.toUpperCase()}</Text>
-                                                </Animated.View>
-                                            )
-                                        }
-                                        {
-                                            !letter && (
-                                                <View
-                                                    key={`cell-${i}-${j}`}
-                                                    style={getCellStyle(i, j)}>
-                                                    <Text style={styles.cellText}>{letter?.toUpperCase()}</Text>
-                                                </View>
-                                            )
-                                        }
-                                    </>
+                                        )
+                                    }
+
+                                    if ( i === curRow && !!letter) {
+                                        return (
+                                            <Animated.View
+                                                entering={ZoomIn}
+                                                key={`cell-active-${i}-${j}`}
+                                                style={getCellStyle(i, j)}>
+                                                <Text style={styles.cellText}>{letter?.toUpperCase()}</Text>
+                                            </Animated.View>
+                                        )
+                                    }
+
+                                    return (
+                                        <View
+                                            key={`cell-${i}-${j}`}
+                                            style={getCellStyle(i, j)}>
+                                            <Text style={styles.cellText}>{letter?.toUpperCase()}</Text>
+                                        </View>
                                 )})
                             }
                         </Animated.View>
