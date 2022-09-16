@@ -1,6 +1,6 @@
 import {ActivityIndicator, ScrollView, Text, View} from 'react-native';
 import {useEffect, useState} from "react";
-import {CLEAR, colors, ENTER, NUMBER_OF_TRIES} from "../../constants";
+import {CLEAR, colors, ENTER } from "../../constants";
 import {KeyboardComponent} from "../Keyboard/Keyboard";
 import {words} from "../../words";
 import styles from './Game.styles';
@@ -149,8 +149,10 @@ const Game = () => {
             const data = JSON.parse(dataString);
             if (data) {
                 const day = data[dayKey];
-                const {rows, curRow, curCol, gameState} = day;
-                setRows(() => rows);
+                const {rows, curRow, curCol, gameState} = day || {};
+                if(rows) {
+                    setRows(() => rows);
+                }
                 setCurCol(() => curCol);
                 setCurRow(() => curRow);
                 setGameState(() => gameState);
